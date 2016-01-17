@@ -2,7 +2,7 @@
 driver:
   name: ec2
   instance_type: c4.large
-  price: 0.02
+  price: 0.025
   security_group_ids: ["sg-e3947284"]
   require_chef_omnibus: 12.5.1
   aws_ssh_key_id: adamthepatterson_rsa
@@ -31,4 +31,5 @@ suites:
   - name: default
     run_list:
       - recipe[tf-swarm-cookbook::default]
+      - recipe[tf-swarm-cookbook::docker]
     attributes:

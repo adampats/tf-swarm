@@ -6,4 +6,6 @@ description 'Installs/Configures tf-swarm-cookbook'
 long_description 'Installs/Configures tf-swarm-cookbook'
 version '0.1.0'
 
+depends 'apt', '~> 2.9.2'
+depends 'apt-docker', '~> 0.3.0'
 depends 'docker', '~> 2.4.1'
