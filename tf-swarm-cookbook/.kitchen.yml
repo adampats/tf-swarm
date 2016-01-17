@@ -1,0 +1,34 @@
+---
+driver:
+  name: ec2
+  instance_type: c4.large
+  price: 0.02
+  security_group_ids: ["sg-e3947284"]
+  require_chef_omnibus: 12.5.1
+  aws_ssh_key_id: adamthepatterson_rsa
+  region: us-west-2
+
+transport:
+  ssh_key: ~/.ssh/adamthepatterson_rsa
+  connection_timeout: 10
+  connection_retries: 5
+  username: ubuntu
+
+provisioner:
+  name: chef_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+# verifier:
+#   name: inspec
+
+platforms:
+  - name: ubuntu-14.04
+    driver:
+      image_id: ami-5189a661
+
+suites:
+  - name: default
+    run_list:
+      - recipe[tf-swarm-cookbook::default]
+    attributes:
