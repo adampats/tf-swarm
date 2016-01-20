@@ -15,14 +15,3 @@ group 'docker' do
   members node['tf-swarm-cookbook']['user']
   append true
 end
-
-docker_image 'swarm' do
-  tag node['tf-swarm-cookbook']['swarm']['version']
-  action :pull
-end
-
-docker_container 'swarm' do
-  repo 'swarm'
-  tag node['tf-swarm-cookbook']['swarm']['version']
-  action :run
-end
