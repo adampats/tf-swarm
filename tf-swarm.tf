@@ -20,13 +20,31 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
-resource "aws_instance" "example" {
-    ami = "ami-5189a661"
-    instance_type = "t2.micro"
-    tags {
-      Name = "App"
-    }
-    key_name = "${var.key}"
-    security_groups = ["allow_ssh"]
-    user_data = "!#/bin/bash ; touch /tmp/foo"
+#resource "aws_instance" "chef_server" {
+resource "aws_spot_instance_request" "chef_server" {
+  spot_price = "0.03"
+  instance_type = "m4.large"
+
+  ami = "ami-f7a2bf96"
+  tags {
+    Name = "App"
+  }
+  key_name = "${var.key}"
+  vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
+  user_data = "${file("./chef-server.sh")}"
+}
+
+#resource "aws_instance" "nodes" {
+resource "aws_spot_instance_request" "nodes" {
+  spot_price = "0.03"
+  instance_type = "m4.large"
+
+  count = 2
+  ami = "ami-f7a2bf96"
+  tags {
+    Name = "App"
+  }
+  key_name = "${var.key}"
+  vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
+  user_data = "${file("./swarm-node.sh")}"
 }
