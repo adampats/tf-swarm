@@ -1,11 +1,20 @@
 #!/bin/bash
+#
+# Very basic shell script for installing all chef server components on one box.
+# https://docs.chef.io/install_server.html
 
-# parameters
+# static parameters
 chef_file='chef-server-core_12.4.1-1_amd64.deb'
+
 user='chef'
+first='Admin'
+last='User'
+email='none@none.com'
 pass='password'
 key_file='/home/ubuntu/chef.pem'
-org_name='cheforg'
+
+short_org='cheforg'
+org_name='Chef Server'
 chef_manage='true'
 chef_push='true'
 chef_reporting='false'
@@ -19,10 +28,10 @@ dpkg -i "/tmp/$chef_file"
 chef-server-ctl reconfigure
 
 chef-server-ctl user-create \
-  $user 'chef' 'admin' 'none@none.com' $pass --filename $key_file
+  $user $first $last $email $pass --filename $key_file
 
 chef-server-ctl org-create \
-  $org_name 'Chef Server' --association_user $user --filename $key_file
+  $short_org $org_name --association_user $user --filename $key_file
 
 if [ $chef_manage == 'true' ]; then
   chef-server-ctl install chef-manage
