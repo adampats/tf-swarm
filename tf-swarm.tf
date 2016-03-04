@@ -1,5 +1,5 @@
 variable "key" {
-  default = "adamthepatterson_rsa"
+  default = "adamkeys"
 }
 
 provider "aws" {
@@ -14,6 +14,12 @@ resource "aws_security_group" "allow_ssh" {
       to_port = 22
       protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags {
     Name = "allow_ssh"
@@ -34,7 +40,7 @@ resource "aws_spot_instance_request" "chef_server" {
   user_data = "${file("./chef-server.sh")}"
 }
 
-#resource "aws_instance" "nodes" {
+/*#resource "aws_instance" "nodes" {
 resource "aws_spot_instance_request" "nodes" {
   spot_price = "0.03"
   instance_type = "m4.large"
@@ -47,4 +53,4 @@ resource "aws_spot_instance_request" "nodes" {
   key_name = "${var.key}"
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
   user_data = "${file("./swarm-node.sh")}"
-}
+}*/

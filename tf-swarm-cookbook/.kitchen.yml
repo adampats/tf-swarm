@@ -2,14 +2,14 @@
 driver:
   name: ec2
   instance_type: c4.large
-  price: 0.025
-  security_group_ids: ["sg-e3947284"]
+  price: 0.04
+  security_group_ids: ["sg-43732327"]
   require_chef_omnibus: 12.5.1
-  aws_ssh_key_id: adamthepatterson_rsa
+  aws_ssh_key_id: adpatter_aws
   region: us-west-2
 
 transport:
-  ssh_key: ~/.ssh/adamthepatterson_rsa
+  ssh_key: ~/.ssh/adpatter_aws
   connection_timeout: 10
   connection_retries: 5
   username: ubuntu
@@ -32,4 +32,6 @@ suites:
     run_list:
       - recipe[tf-swarm-cookbook::default]
       - recipe[tf-swarm-cookbook::docker]
+      - recipe[tf-swarm-cookbook::etcd]
+      - recipe[tf-swarm-cookbook::swarm]
     attributes:
